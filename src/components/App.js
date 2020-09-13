@@ -24,25 +24,32 @@ function App(props) {
   }
 
   function closeAllPopups() {
-    setChangeAvatarPopupOpen(false)
-    setEditProfilePopupOpen(false)
-    setAddImagePopupOpen(false)
+    setChangeAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddImagePopupOpen(false);
+    setSelectedCard(false);
+  }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
   }
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddImagePopupOpen, setAddImagePopupOpen] = React.useState(false);
   const [isChangeAvatarPopupOpen, setChangeAvatarPopupOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(false);
 
   return (
     <div className="page">
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
+      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
+      onCardClick={handleCardClick}/>
       <Footer />
-      <section className={isEditProfilePopupOpen || isAddImagePopupOpen || isChangeAvatarPopupOpen ? 'popup popup_opened'
-        : 'popup'}>
+      <section className={isEditProfilePopupOpen || isAddImagePopupOpen || isChangeAvatarPopupOpen || selectedCard
+        ? 'popup popup_opened' : 'popup'}>
         <PopupWithForm title='Редактировать профиль' name='profile' loader={<Loader />}
-          isOpen={isEditProfilePopupOpen ? { isOpen } : false} onClose = {closeAllPopups}>
+          isOpen={isEditProfilePopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_name" type="text" id="name-input" name="name"
               placeholder="Имя" minLength='2' maxLength="40" required />
@@ -54,7 +61,7 @@ function App(props) {
         </PopupWithForm>
 
         <PopupWithForm title='Новое место' name='cards' loader={<Loader />}
-          isOpen={isAddImagePopupOpen ? { isOpen } : false} onClose = {closeAllPopups}>
+          isOpen={isAddImagePopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_card-name" type="text" id="card-input" name="card"
               placeholder="Название" minLength="1" maxLength="30" required />
@@ -66,14 +73,14 @@ function App(props) {
         </PopupWithForm>
 
         <PopupWithForm title='Обновить аватар' name='avatar' loader={<Loader />}
-          isOpen={isChangeAvatarPopupOpen ? { isOpen } : false} onClose = {closeAllPopups}>
+          isOpen={isChangeAvatarPopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_avatar" type="url" id="avatar-input" name="avatar"
               placeholder="Ссылка на новый аватар" required />
             <span id="avatar-input-error" className="popup__error"></span>
           </fieldset>}
         </PopupWithForm>
-        <ImagePopup />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
         {/* <div className="popup__container popup__container-form popup__container_trash">
           <form name="form-trash" action="#" method="post" className="popup__form popup__form_trash" novalidate>
@@ -84,22 +91,7 @@ function App(props) {
         </div> */}
       </section>
     </div>
-    // <template id="photo-place__template">
-    //   <li className="photo-place__element">
-    //     <button type="button" className="photo-place__trash"></button>
-    //     <img src="#" alt="" className="photo-place__image" />
-    //     <div className="photo-place__group">
-    //       <h2 className="photo-place__title"></h2>
-    //       <div className="photo-place__group-like">
-    //         <button type="button" className="photo-place__like"></button>
-    //         <p className="photo-place__number-likes"></p>
-    //       </div>
-    //     </div>
-    //   </li>
-    // </template>
-
   );
-
 }
 
 export default App;
