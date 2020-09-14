@@ -23,10 +23,16 @@ function App(props) {
     setIsOpen(true);
   }
 
+  function handleTrashClick() {
+    setTrashPopupOpen(true);
+    setIsOpen(true);
+  }
+
   function closeAllPopups() {
     setChangeAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddImagePopupOpen(false);
+    setTrashPopupOpen(false);
     setSelectedCard(false);
   }
 
@@ -39,17 +45,18 @@ function App(props) {
   const [isChangeAvatarPopupOpen, setChangeAvatarPopupOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(false);
+  const [isTrashPopupOpen, setTrashPopupOpen] = React.useState(false);
 
   return (
     <div className="page">
       <Header />
       <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
-      onCardClick={handleCardClick}/>
+      onCardClick={handleCardClick} onTrashClick={handleTrashClick}/>
       <Footer />
-      <section className={isEditProfilePopupOpen || isAddImagePopupOpen || isChangeAvatarPopupOpen || selectedCard
-        ? 'popup popup_opened' : 'popup'}>
+      <section className={isEditProfilePopupOpen || isAddImagePopupOpen || isChangeAvatarPopupOpen
+        || selectedCard || isTrashPopupOpen ? 'popup popup_opened' : 'popup'}>
         <PopupWithForm title='Редактировать профиль' name='profile' loader={<Loader />}
-          isOpen={isEditProfilePopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
+          isOpen={isEditProfilePopupOpen ?  isOpen  : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_name" type="text" id="name-input" name="name"
               placeholder="Имя" minLength='2' maxLength="40" required />
@@ -61,7 +68,7 @@ function App(props) {
         </PopupWithForm>
 
         <PopupWithForm title='Новое место' name='cards' loader={<Loader />}
-          isOpen={isAddImagePopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
+          isOpen={isAddImagePopupOpen ? isOpen  : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_card-name" type="text" id="card-input" name="card"
               placeholder="Название" minLength="1" maxLength="30" required />
@@ -73,22 +80,19 @@ function App(props) {
         </PopupWithForm>
 
         <PopupWithForm title='Обновить аватар' name='avatar' loader={<Loader />}
-          isOpen={isChangeAvatarPopupOpen ? { isOpen } : false} onClose={closeAllPopups}>
+          isOpen={isChangeAvatarPopupOpen ? isOpen  : false} onClose={closeAllPopups}>
           {<fieldset className="popup__info">
             <input className="popup__input popup__input_avatar" type="url" id="avatar-input" name="avatar"
               placeholder="Ссылка на новый аватар" required />
             <span id="avatar-input-error" className="popup__error"></span>
           </fieldset>}
         </PopupWithForm>
+        
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-        {/* <div className="popup__container popup__container-form popup__container_trash">
-          <form name="form-trash" action="#" method="post" className="popup__form popup__form_trash" novalidate>
-            <h3 className="popup__form-heading">Вы уверены?</h3>
-            <button className="popup__button popup__button-text popup__button_trash" type="submit">Да</button>
-          </form>
-          <button type="button" className="popup__close popup__close_container-trash"></button>
-        </div> */}
+        <PopupWithForm title='Вы уверены?' name='trash' loader='Да'
+          isOpen={isTrashPopupOpen ? isOpen : false} onClose={closeAllPopups}>
+        </PopupWithForm>
       </section>
     </div>
   );

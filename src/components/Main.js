@@ -5,7 +5,7 @@ import { api } from '../utils/api.js'
 import Card from '../components/Card'
 
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashClick }) {
     const [userName, setUserName] = React.useState('Жак-Ив Кусто');
     const [userDescription, setUserDescription] = React.useState('Исследователь океана');
     const [userAvatar, setUserAvatar] = React.useState(UserAvatar);
@@ -50,7 +50,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
             <section className="photo-place page__container">
                 <ul className="photo-place__elements">
-                    {cards.map((card, i) => <Card key={i} card={card} onCardClick={onCardClick}/>)}
+                    {cards.map((card, i) => <Card key={i} card={card} onCardClick={onCardClick} onTrashClick={onTrashClick}/>)}
                 </ul>
             </section>
         </main>
