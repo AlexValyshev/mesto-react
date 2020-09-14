@@ -15,7 +15,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashCli
         api
             .getInitialInfo() // Загрузка информации о пользователе.
             .then(([userInfo, initialCards]) => {
-                // console.log(userInfo);
                 setUserAvatar(userInfo.avatar);
                 setUserName(userInfo.name);
                 setUserDescription(userInfo.about);
@@ -35,22 +34,24 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashCli
     return (
         <main className="content">
             <section className="profile page__container">
-                <div className="profile__avatar" onClick={onEditAvatar} style={{ backgroundImage: `url(${userAvatar})` }} >
+                <div className="profile__avatar" onClick={onEditAvatar}
+                    style={{ backgroundImage: `url(${userAvatar})` }} >
                     <img className="profile__pencil" src={PencilAvatar} alt="Значок редактирования профиля" />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-container">
                         <h1 className="profile__name">{userName}</h1>
-                        <button type="button" className="profile__editbutton" onClick={onEditProfile}></button>
+                        <button type="button" className="profile__editbutton" onClick={onEditProfile}/>
                     </div>
                     <p className="profile__job">{userDescription}</p>
                 </div>
-                <button type="button" className="profile__addbutton" onClick={onAddPlace}></button>
+                <button type="button" className="profile__addbutton" onClick={onAddPlace}/>
             </section>
 
             <section className="photo-place page__container">
                 <ul className="photo-place__elements">
-                    {cards.map((card, i) => <Card key={i} card={card} onCardClick={onCardClick} onTrashClick={onTrashClick}/>)}
+                    {cards.map((card, i) =>
+                        <Card key={i} card={card} onCardClick={onCardClick} onTrashClick={onTrashClick} />)}
                 </ul>
             </section>
         </main>

@@ -4,28 +4,25 @@ class Api {
         this._headers = headers;
     }
 
+    resFetch(res) {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`)
+    }
+
     getUserInfo() { // Запрос на загрузку данных пользователя
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+            .then(this.resFetch);
     }
 
     getInitialCards() { // Запрос на загрузку карточек
         return fetch(`${this._baseUrl}/cards`, {
             headers: this._headers
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+            .then(this.resFetch);
     }
 
     getInitialInfo() {
@@ -42,12 +39,7 @@ class Api {
                 about: `${job}`
             })
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 
     addNewCard([{ name, link }]) { // Запрос на добавление новой карточки
@@ -59,12 +51,7 @@ class Api {
                 link: `${link}`
             })
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 
     deleteCard(itemId) { // Запрос на удаление карточки
@@ -72,12 +59,7 @@ class Api {
             method: 'DELETE',
             headers: this._headers
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 
     setUserAvatar({ avatar }) { // Запрос на изменение аватара пользователя
@@ -88,12 +70,7 @@ class Api {
                 avatar: `${avatar}`
             })
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 
     addLikeCard(itemId) { // Запрос на установку лайка
@@ -101,12 +78,7 @@ class Api {
             method: 'PUT',
             headers: this._headers
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 
     removeLikeCard(itemId) { // Запрос на снятие лайка
@@ -114,14 +86,11 @@ class Api {
             method: 'DELETE',
             headers: this._headers
         })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка: ${res.status}`);
-            });
+        .then(this.resFetch);
     }
 }
+
+
 
 export const api = new Api({
     baseUrl: "https://mesto.nomoreparties.co/v1/cohort-14",
