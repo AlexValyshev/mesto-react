@@ -2,7 +2,7 @@ import React from 'react';
 
 function ImagePopup({ card, onClose }) {
     return (
-        <section className={card.src ? 'popup popup_opened' : 'popup'}>
+        <section className={card.src ? 'popup popup_opened popup__change-background' : 'popup'}>
             <div className={card.src ? 'popup__container popup__container-view popup__container_opened'
                 : 'popup__container popup__container-view'}>
                 <figure className="popup__view">
