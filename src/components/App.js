@@ -44,7 +44,6 @@ function App() {
   const [isAddImagePopupOpen, setAddImagePopupOpen] = React.useState(false);
   const [isChangeAvatarPopupOpen, setChangeAvatarPopupOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isTrashPopupOpen, setTrashPopupOpen] = React.useState(false);
 
@@ -59,35 +58,35 @@ function App() {
       <Footer />
       <PopupWithForm title='Редактировать профиль' name='profile' loader={<Loader />}
         isOpen={isEditProfilePopupOpen ? isOpen : false} onClose={closeAllPopups}>
-        {<fieldset className="popup__info">
+        <fieldset className="popup__info">
           <input className="popup__input popup__input_name" type="text" id="name-input" name="name"
             placeholder="Имя" minLength='2' maxLength="40" required />
           <span id="name-input-error" className="popup__error" />
           <input className="popup__input popup__input_job" type="text" id="job-input" name="job"
             placeholder="О себе" minLength="2" maxLength="200" required />
           <span id="job-input-error" className="popup__error" />
-        </fieldset>}
+        </fieldset>
       </PopupWithForm>
 
       <PopupWithForm title='Новое место' name='cards' loader={<Loader />}
         isOpen={isAddImagePopupOpen ? isOpen : false} onClose={closeAllPopups}>
-        {<fieldset className="popup__info">
+        <fieldset className="popup__info">
           <input className="popup__input popup__input_card-name" type="text" id="card-input" name="card"
             placeholder="Название" minLength="1" maxLength="30" required />
           <span id="card-input-error" className="popup__error" />
           <input className="popup__input popup__input_link" type="url" id="link-input" name="link"
             placeholder="Сссылка на картинку" required />
           <span id="link-input-error" className="popup__error" />
-        </fieldset>}
+        </fieldset>
       </PopupWithForm>
 
       <PopupWithForm title='Обновить аватар' name='avatar' loader={<Loader />}
         isOpen={isChangeAvatarPopupOpen ? isOpen : false} onClose={closeAllPopups}>
-        {<fieldset className="popup__info">
+        <fieldset className="popup__info">
           <input className="popup__input popup__input_avatar" type="url" id="avatar-input" name="avatar"
             placeholder="Ссылка на новый аватар" required />
           <span id="avatar-input-error" className="popup__error" />
-        </fieldset>}
+        </fieldset>
       </PopupWithForm>
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
