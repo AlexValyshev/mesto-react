@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/AlexValyshev/mesto-reactstatic/css/main.591977d1.chunk.css",
-    "main.js": "/AlexValyshev/mesto-reactstatic/js/main.3a567507.chunk.js",
-    "main.js.map": "/AlexValyshev/mesto-reactstatic/js/main.3a567507.chunk.js.map",
-    "runtime-main.js": "/AlexValyshev/mesto-reactstatic/js/runtime-main.0104d642.js",
-    "runtime-main.js.map": "/AlexValyshev/mesto-reactstatic/js/runtime-main.0104d642.js.map",
-    "static/js/2.ccb55473.chunk.js": "/AlexValyshev/mesto-reactstatic/js/2.ccb55473.chunk.js",
-    "static/js/2.ccb55473.chunk.js.map": "/AlexValyshev/mesto-reactstatic/js/2.ccb55473.chunk.js.map",
-    "index.html": "/AlexValyshev/mesto-reactindex.html",
-    "precache-manifest.6650cdda636e06bca8e58f14e9c1326a.js": "/AlexValyshev/mesto-reactprecache-manifest.6650cdda636e06bca8e58f14e9c1326a.js",
-    "service-worker.js": "/AlexValyshev/mesto-reactservice-worker.js",
-    "static/css/main.591977d1.chunk.css.map": "/AlexValyshev/mesto-reactstatic/css/main.591977d1.chunk.css.map",
-    "static/js/2.ccb55473.chunk.js.LICENSE.txt": "/AlexValyshev/mesto-reactstatic/js/2.ccb55473.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/AlexValyshev/mesto-reactstatic/media/trash.66807b14.svg",
-    "static/media/logo-mesto.svg": "/AlexValyshev/mesto-reactstatic/media/logo-mesto.e889e45f.svg",
-    "static/media/pencil-avatar.svg": "/AlexValyshev/mesto-reactstatic/media/pencil-avatar.34c46850.svg"
+    "main.css": "/static/css/main.d2844f50.chunk.css",
+    "main.js": "/static/js/main.1b65e313.chunk.js",
+    "main.js.map": "/static/js/main.1b65e313.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e8402bce.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e8402bce.js.map",
+    "static/js/2.ccb55473.chunk.js": "/static/js/2.ccb55473.chunk.js",
+    "static/js/2.ccb55473.chunk.js.map": "/static/js/2.ccb55473.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.42d5dc7aabe84a702db7857aa5fd6c17.js": "/precache-manifest.42d5dc7aabe84a702db7857aa5fd6c17.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.d2844f50.chunk.css.map": "/static/css/main.d2844f50.chunk.css.map",
+    "static/js/2.ccb55473.chunk.js.LICENSE.txt": "/static/js/2.ccb55473.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/trash.66807b14.svg",
+    "static/media/logo-mesto.svg": "/static/media/logo-mesto.e889e45f.svg",
+    "static/media/pencil-avatar.svg": "/static/media/pencil-avatar.34c46850.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.0104d642.js",
+    "static/js/runtime-main.e8402bce.js",
     "static/js/2.ccb55473.chunk.js",
-    "static/css/main.591977d1.chunk.css",
-    "static/js/main.3a567507.chunk.js"
+    "static/css/main.d2844f50.chunk.css",
+    "static/js/main.1b65e313.chunk.js"
   ]
 }
