@@ -31,4 +31,4 @@
 
 
 ## **Ссылка на проект в Интернете**
-   https://alexvalyshev.github.io/mesto/index.html
+   https://alexvalyshev.github.io/mesto-react/index.html
