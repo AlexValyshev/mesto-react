@@ -39,7 +39,7 @@ class Api {
                 about: `${job}`
             })
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
     }
 
     addNewCard([{ name, link }]) { // Запрос на добавление новой карточки
@@ -51,7 +51,7 @@ class Api {
                 link: `${link}`
             })
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
     }
 
     deleteCard(itemId) { // Запрос на удаление карточки
@@ -59,7 +59,7 @@ class Api {
             method: 'DELETE',
             headers: this._headers
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
     }
 
     setUserAvatar({ avatar }) { // Запрос на изменение аватара пользователя
@@ -70,7 +70,7 @@ class Api {
                 avatar: `${avatar}`
             })
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
     }
 
     addLikeCard(itemId) { // Запрос на установку лайка
@@ -78,7 +78,7 @@ class Api {
             method: 'PUT',
             headers: this._headers
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
     }
 
     removeLikeCard(itemId) { // Запрос на снятие лайка
@@ -86,7 +86,15 @@ class Api {
             method: 'DELETE',
             headers: this._headers
         })
-        .then(this.resFetch);
+            .then(this.resFetch);
+    }
+
+    changeLikeStatus(cardid, isLiked) { // Запрос на изменение лайка
+        if (isLiked) {
+            return this.removeLikeCard(cardid);
+        } else {
+            return this.addLikeCard(cardid);
+        }
     }
 }
 

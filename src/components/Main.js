@@ -1,49 +1,25 @@
 import React from 'react';
 import PencilAvatar from '../images/pencil-avatar.svg';
-import UserAvatar from '../images/iv-custo.jpg'
-import { api } from '../utils/api.js'
-import Card from '../components/Card'
+import Card from '../components/Card';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashClick, cards, onCardLike, onCardDelete }) {
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashClick }) {
-    const [userName, setUserName] = React.useState('Жак-Ив Кусто');
-    const [userDescription, setUserDescription] = React.useState('Исследователь океана');
-    const [userAvatar, setUserAvatar] = React.useState(UserAvatar);
-    const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        api
-            .getInitialInfo() // Загрузка информации о пользователе.
-            .then(([userInfo, initialCards]) => {
-                setUserAvatar(userInfo.avatar);
-                setUserName(userInfo.name);
-                setUserDescription(userInfo.about);
-                const items = initialCards.map(item => ({
-                    src: item.link,
-                    alt: item.name,
-                    title: item.name,
-                }))
-
-                setCards(items);
-            })
-            .catch((err) => {
-                console.log(err); // Выведем ошибку в консоль
-            });
-    }, []);
+    const currentUser = React.useContext(CurrentUserContext);
 
     return (
         <main className="content">
             <section className="profile page__container">
                 <div className="profile__avatar" onClick={onEditAvatar}
-                    style={{ backgroundImage: `url(${userAvatar})` }} >
+                    style={{ backgroundImage: `url(${currentUser.avatar})` }} >
                     <img className="profile__pencil" src={PencilAvatar} alt="Значок редактирования профиля" />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-container">
-                        <h1 className="profile__name">{userName}</h1>
+                        <h1 className="profile__name">{currentUser.name}</h1>
                         <button type="button" className="profile__editbutton" onClick={onEditProfile}/>
                     </div>
-                    <p className="profile__job">{userDescription}</p>
+                    <p className="profile__job">{currentUser.about}</p>
                 </div>
                 <button type="button" className="profile__addbutton" onClick={onAddPlace}/>
             </section>
@@ -51,7 +27,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashCli
             <section className="photo-place page__container">
                 <ul className="photo-place__elements">
                     {cards.map((card, i) =>
-                        <Card key={i} card={card} onCardClick={onCardClick} onTrashClick={onTrashClick} />)}
+                        <Card key={i} card={card} onCardClick={onCardClick}
+                            onTrashClick={onTrashClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />)}
                 </ul>
             </section>
         </main>

@@ -1,24 +1,38 @@
 import React from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Card({ card, onCardClick, onTrashClick }) {
+const Card = React.memo(({ card, onCardClick, onTrashClick, onCardLike, onCardDelete }) => {
+    const currentUser = React.useContext(CurrentUserContext);
+    const isOwn = card.owner._id === currentUser._id;
+    const trashButtonClassName = (`${isOwn ? 'photo-place__trash photo-place__trash_visible' : 'photo-place__trash'}`);
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    let likeButtonClassName = (`${isLiked ? 'photo-place__like photo-place__like_active' : 'photo-place__like'}`);
 
     function handleClick() {
         onCardClick(card);
     }
 
+    function handleLikeClick() {
+        onCardLike(card);
+    }
+
+    function handleDeleteClick() {
+        onCardDelete(card);
+    }
+
     return (
         <li className="photo-place__element">
-            <button type="button" className="photo-place__trash photo-place__trash_visible" onClick={onTrashClick} />
-            <img src={card.src} alt={card.alt} className="photo-place__image" onClick={handleClick}/>
+            <button type="button" className={trashButtonClassName} onClick={handleDeleteClick} />
+            <img src={card.link} alt={card.name} className="photo-place__image" onClick={handleClick} />
             <div className="photo-place__group">
-                <h2 className="photo-place__title">{card.title}</h2>
+                <h2 className="photo-place__title">{card.name}</h2>
                 <div className="photo-place__group-like">
-                    <button type="button" className="photo-place__like"/>
-                    <p className="photo-place__number-likes"/>
+                    <button type="button" className={likeButtonClassName} onClick={handleLikeClick}/>
+                    <p className="photo-place__number-likes" />
                 </div>
             </div>
         </li>
     );
-}
+});
 
 export default Card;
