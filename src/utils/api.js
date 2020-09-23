@@ -42,7 +42,7 @@ class Api {
             .then(this.resFetch);
     }
 
-    addNewCard([{ name, link }]) { // Запрос на добавление новой карточки
+    addNewCard({ name, link }) { // Запрос на добавление новой карточки
         return fetch(`${this._baseUrl}/cards`, {
             method: 'POST',
             headers: this._headers,
