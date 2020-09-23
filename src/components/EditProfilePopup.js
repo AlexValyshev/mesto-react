@@ -3,7 +3,7 @@ import PopupWithForm from '../components/PopupWithForm';
 import Loader from '../components/Loader';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, props}) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser}) {
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
 
@@ -16,7 +16,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, props}) {
     }
 
     const currentUser = React.useContext(CurrentUserContext);
-
     React.useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
@@ -31,7 +30,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, props}) {
     }
 
     return (
-
         <PopupWithForm title='Редактировать профиль' name='profile' loader={<Loader />}
             isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
             <fieldset className="popup__info">
@@ -43,7 +41,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, props}) {
                 <span id="job-input-error" className="popup__error" />
             </fieldset>
         </PopupWithForm>
-
     );
 }
 

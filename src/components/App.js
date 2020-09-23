@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import PopupWithForm from '../components/PopupWithForm';
 import ImagePopup from '../components/ImagePopup';
 import EditProfilePopup from '../components/EditProfilePopup';
+import EditAvatarPopup from '../components/EditAvatarPopup';
 import Loader from '../components/Loader';
 import { api } from '../utils/api.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -71,8 +72,7 @@ function App() {
   }, []);
 
   console.log(cards);
-  
-  function handleCardLike(card) {
+  function handleCardLike(card) {// Запрос на установку лайка и дизлайка
     const isLiked = card.likes.some(i => i._id === currentUser._id);
       api
         .changeLikeStatus(card._id, isLiked)
@@ -82,7 +82,7 @@ function App() {
         })
   }
 
-  function handleCardDelete(card) {
+  function handleCardDelete(card) { // Запрос на удаление карточки.
     api
         .deleteCard(card._id)
         .then((res) => {
@@ -91,9 +91,18 @@ function App() {
         })
   }
 
-  function handleUpdateUser(onUpdateUser) {
+  function handleUpdateUser(onUpdateUser) { // Запрос на обновление данных пользователя.
     api
         .setUserInfo(onUpdateUser)
+        .then((userInfo) => {
+          setCurrentUser(userInfo);
+        })
+        closeAllPopups()
+  }
+
+  function handleUpdateAvatar(onUpdateAvatar) { // Запрос на обновление аватара пользователя.
+    api
+        .setUserAvatar(onUpdateAvatar)
         .then((userInfo) => {
           setCurrentUser(userInfo);
         })
@@ -129,14 +138,9 @@ function App() {
           </fieldset>
         </PopupWithForm>
 
-        <PopupWithForm title='Обновить аватар' name='avatar' loader={<Loader />}
-          isOpen={isChangeAvatarPopupOpen ? isOpen : false} onClose={closeAllPopups}>
-          <fieldset className="popup__info">
-            <input className="popup__input popup__input_avatar" type="url" id="avatar-input" name="avatar"
-              placeholder="Ссылка на новый аватар" required />
-            <span id="avatar-input-error" className="popup__error" />
-          </fieldset>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isChangeAvatarPopupOpen ? isOpen : false}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
