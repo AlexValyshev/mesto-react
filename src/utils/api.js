@@ -30,13 +30,13 @@ class Api {
         return Promise.all(this._promises);
     }
 
-    setUserInfo({ name, job }) { // Запрос на обновление данных пользователя
+    setUserInfo({ name, about }) { // Запрос на обновление данных пользователя
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 name: `${name}`,
-                about: `${job}`
+                about: `${about}`
             })
         })
             .then(this.resFetch);

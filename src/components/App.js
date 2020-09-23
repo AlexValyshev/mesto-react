@@ -4,6 +4,7 @@ import Main from '../components/Main';
 import Footer from '../components/Footer';
 import PopupWithForm from '../components/PopupWithForm';
 import ImagePopup from '../components/ImagePopup';
+import EditProfilePopup from '../components/EditProfilePopup';
 import Loader from '../components/Loader';
 import { api } from '../utils/api.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -85,10 +86,18 @@ function App() {
     api
         .deleteCard(card._id)
         .then((res) => {
-          const newCards = cards.filter((item) => item._id !== res._id);
+          const newCards = cards.filter((item) => item._id !== card._id);
           setCards(newCards);
         })
+  }
 
+  function handleUpdateUser(onUpdateUser) {
+    api
+        .setUserInfo(onUpdateUser)
+        .then((userInfo) => {
+          setCurrentUser(userInfo);
+        })
+        closeAllPopups()
   }
 
   return (
@@ -102,20 +111,12 @@ function App() {
           onTrashClick={handleTrashClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}/>
+          onCardDelete={handleCardDelete} />
         
-        <PopupWithForm title='Редактировать профиль' name='profile' loader={<Loader />}
-          isOpen={isEditProfilePopupOpen ? isOpen : false} onClose={closeAllPopups}>
-          <fieldset className="popup__info">
-            <input className="popup__input popup__input_name" type="text" id="name-input" name="name"
-              placeholder="Имя" minLength='2' maxLength="40" required />
-            <span id="name-input-error" className="popup__error" />
-            <input className="popup__input popup__input_job" type="text" id="job-input" name="job"
-              placeholder="О себе" minLength="2" maxLength="200" required />
-            <span id="job-input-error" className="popup__error" />
-          </fieldset>
-        </PopupWithForm>
-
+        <EditProfilePopup isOpen={isEditProfilePopupOpen ? isOpen : false}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser} />
+        
         <PopupWithForm title='Новое место' name='cards' loader={<Loader />}
           isOpen={isAddImagePopupOpen ? isOpen : false} onClose={closeAllPopups}>
           <fieldset className="popup__info">
