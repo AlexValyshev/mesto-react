@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Loader() {
+function Loader({ isLoad }) {
     return (
         <>
-            <p className="popup__button-text popup__button-save">Сохранить</p>
-            <p className="popup__button-text popup__button-saving popup__button-text_disabled">Сохранение...</p>
+            <p className={`popup__button-text ${isLoad && 'popup__button-text_disabled'}`} >Сохранить </p>
+            <p className={`popup__button-text ${!isLoad && 'popup__button-text_disabled'}`}>Сохранение...</p>
         </>
     );
 }

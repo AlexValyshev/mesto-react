@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRef } from 'react'
 
-function ImagePopup({ card, onClose }) {
+function ImagePopup({ card, onClose, onCloseOverlay, onKeyDown }) {
     const popupViewContainer = useRef(null);
     return (
-        <section className={card.link ? 'popup popup_opened popup__change-background' : 'popup'}>
+        <section className={card.link ? 'popup popup_opened popup__change-background' : 'popup'} onClick={onCloseOverlay}
+                onKeyDown={onKeyDown}>
             <div className={card.link ? 'popup__container popup__container-view popup__container_opened'
                 : 'popup__container popup__container-view'}>
                 <figure className="popup__view" ref={popupViewContainer}> 

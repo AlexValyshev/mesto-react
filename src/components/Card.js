@@ -6,7 +6,7 @@ const Card = React.memo(({ card, onCardClick, onTrashClick, onCardLike, onCardDe
     const isOwn = card.owner._id === currentUser._id;
     const trashButtonClassName = (`${isOwn ? 'photo-place__trash photo-place__trash_visible' : 'photo-place__trash'}`);
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    let likeButtonClassName = (`${isLiked ? 'photo-place__like photo-place__like_active' : 'photo-place__like'}`);
+    const likeButtonClassName = (`${isLiked ? 'photo-place__like photo-place__like_active' : 'photo-place__like'}`);
 
     function handleClick() {
         onCardClick(card);
@@ -17,7 +17,7 @@ const Card = React.memo(({ card, onCardClick, onTrashClick, onCardLike, onCardDe
     }
 
     function handleDeleteClick() {
-        onCardDelete(card);
+        onTrashClick();
     }
 
     return (

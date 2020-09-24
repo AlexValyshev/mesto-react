@@ -2,17 +2,30 @@ import React from 'react';
 import Header from '../components/Header';
 import Main from '../components/Main';
 import Footer from '../components/Footer';
-import PopupWithForm from '../components/PopupWithForm';
 import ImagePopup from '../components/ImagePopup';
 import EditProfilePopup from '../components/EditProfilePopup';
 import EditAvatarPopup from '../components/EditAvatarPopup';
 import AddPlacePopup from '../components/AddPlacePopup';
-import Loader from '../components/Loader';
-import { api } from '../utils/api.js'
+import DeleteCardPopup from '../components/DeleteCardPopup';
+import { api } from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import UserAvatar from '../images/iv-custo.jpg'
 
 function App() {
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddImagePopupOpen, setAddImagePopupOpen] = React.useState(false);
+  const [isChangeAvatarPopupOpen, setChangeAvatarPopupOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isTrashPopupOpen, setTrashPopupOpen] = React.useState(false);
+  const initialUserInfo = {
+    name: 'Жак-Ив Кусто',
+    about: 'Исследователь океана',
+    avatar: UserAvatar,
+  }
+  const [currentUser, setCurrentUser] = React.useState(initialUserInfo);
+  const [cards, setCards] = React.useState([]);
+  const [isLoad, setLoad] = React.useState(false);
 
   function handleEditAvatarClick() {
     setChangeAvatarPopupOpen(true);
@@ -29,7 +42,7 @@ function App() {
     setIsOpen(true);
   }
 
-  function handleTrashClick() {
+  function handleTrashClick(card) {
     setTrashPopupOpen(true);
     setIsOpen(true);
   }
@@ -40,25 +53,12 @@ function App() {
     setAddImagePopupOpen(false);
     setTrashPopupOpen(false);
     setSelectedCard({});
+    setTimeout(setLoad, 1000);
   }
 
   function handleCardClick(card) {
     setSelectedCard(card);
   }
-
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-  const [isAddImagePopupOpen, setAddImagePopupOpen] = React.useState(false);
-  const [isChangeAvatarPopupOpen, setChangeAvatarPopupOpen] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isTrashPopupOpen, setTrashPopupOpen] = React.useState(false);
-  const initialUserInfo = {
-    name: 'Жак-Ив Кусто',
-    about: 'Исследователь океана',
-    avatar: UserAvatar,
-  }
-  const [currentUser, setCurrentUser] = React.useState(initialUserInfo);
-  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api
@@ -72,7 +72,6 @@ function App() {
       });
   }, []);
 
-  console.log(cards);
   function handleCardLike(card) {// Запрос на установку лайка и дизлайка
     const isLiked = card.likes.some(i => i._id === currentUser._id);
       api
@@ -84,43 +83,77 @@ function App() {
   }
 
   function handleCardDelete(card) { // Запрос на удаление карточки.
+    console.log(card)
     api
         .deleteCard(card._id)
         .then((res) => {
           const newCards = cards.filter((item) => item._id !== card._id);
           setCards(newCards);
         })
+        .catch((err) => {
+          console.log(err); // Выведем ошибку в консоль
+        });
+      closeAllPopups()    
   }
 
   function handleUpdateUser(onUpdateUser) { // Запрос на обновление данных пользователя.
+    setLoad(true);
     api
-        .setUserInfo(onUpdateUser)
+      .setUserInfo(onUpdateUser)
         .then((userInfo) => {
           setCurrentUser(userInfo);
+          setTimeout(closeAllPopups, 500);
         })
-        closeAllPopups()
+        .catch((err) => {
+          console.log(err); // Выведем ошибку в консоль
+        });
   }
 
   function handleUpdateAvatar(onUpdateAvatar) { // Запрос на обновление аватара пользователя.
+    setLoad(true);
     api
         .setUserAvatar(onUpdateAvatar)
         .then((newAvatar) => {
           setCurrentUser(newAvatar);
+          setTimeout(closeAllPopups, 500);
         })
-        closeAllPopups()
+        .catch((err) => {
+          console.log(err); // Выведем ошибку в консоль
+        });
   }
 
   function handleAddPlaceSubmit(onAddPlace) { // Запрос на добавление новой карточки.
+    setLoad(true);
     api
         .addNewCard(onAddPlace)
         .then((newCard) => {
           setCards([...cards, newCard]);
+          setTimeout(closeAllPopups, 500);
         })
-        closeAllPopups()
+        .catch((err) => {
+          console.log(err); // Выведем ошибку в консоль
+        });
   }
 
+  function handleOverlayClose(evt) {
+    if (evt.target === evt.currentTarget) {
+      closeAllPopups();
+    }
+  }
+
+  function handleEscClose(evt) {
+    if (evt.key === 'Escape') {
+      closeAllPopups();
+    }
+    return document.removeEventListener('keydown', handleEscClose);
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEscClose);
+  });
+
   return (
-    <div className="page">
+    <div className="page" >
       <Header />
       <CurrentUserContext.Provider value={currentUser}>
         <Main onEditProfile={handleEditProfileClick}
@@ -134,20 +167,29 @@ function App() {
         
         <EditProfilePopup isOpen={isEditProfilePopupOpen ? isOpen : false}
           onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser} />
+          onUpdateUser={handleUpdateUser}
+          onCloseOverlay={handleOverlayClose}
+          isLoad={isLoad}/>
         
         <AddPlacePopup isOpen={isAddImagePopupOpen ? isOpen : false}
           onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}/>
+          onAddPlace={handleAddPlaceSubmit}
+          onCloseOverlay={handleOverlayClose}
+          isLoad={isLoad}/>
 
         <EditAvatarPopup isOpen={isChangeAvatarPopupOpen ? isOpen : false}
           onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}/>
+          onUpdateAvatar={handleUpdateAvatar}
+          onCloseOverlay={handleOverlayClose}
+          isLoad={isLoad}/>
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} onCloseOverlay={handleOverlayClose} onKeyDown={handleEscClose}/>
 
-        <PopupWithForm title='Вы уверены?' name='trash' loader='Да'
-            isOpen={isTrashPopupOpen ? isOpen : false} onClose={closeAllPopups} />
+        <DeleteCardPopup isOpen={isTrashPopupOpen ? isOpen : false}
+          onClose={closeAllPopups}
+          card={selectedCard}
+          onCardDelete={handleCardDelete}
+          onCloseOverlay={handleOverlayClose}/>
       </CurrentUserContext.Provider>   
       <Footer />
     </div>
