@@ -3,7 +3,7 @@ import PencilAvatar from '../images/pencil-avatar.svg';
 import Card from '../components/Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashClick, cards, onCardLike, onCardDelete }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashClick, cards, onCardLike}) {
     const currentUser = React.useContext(CurrentUserContext);
 
     return (
@@ -27,7 +27,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashCli
                 <ul className="photo-place__elements">
                     {cards.map((card, i) =>
                         <Card key={i} card={card} onCardClick={onCardClick}
-                            onTrashClick={onTrashClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />)}
+                            onTrashClick={onTrashClick} onCardLike={onCardLike}/>)}
                 </ul>
             </section>
         </main>

@@ -18,14 +18,15 @@ function App() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isTrashPopupOpen, setTrashPopupOpen] = React.useState(false);
+  const [cards, setCards] = React.useState([]);
+  const [isLoad, setLoad] = React.useState(false);
+  const [deleteCard, setDeleteCard] = React.useState({});
   const initialUserInfo = {
     name: 'Жак-Ив Кусто',
     about: 'Исследователь океана',
     avatar: UserAvatar,
   }
   const [currentUser, setCurrentUser] = React.useState(initialUserInfo);
-  const [cards, setCards] = React.useState([]);
-  const [isLoad, setLoad] = React.useState(false);
 
   function handleEditAvatarClick() {
     setChangeAvatarPopupOpen(true);
@@ -45,6 +46,7 @@ function App() {
   function handleTrashClick(card) {
     setTrashPopupOpen(true);
     setIsOpen(true);
+    setDeleteCard(card);
   }
 
   function closeAllPopups() {
@@ -54,6 +56,7 @@ function App() {
     setTrashPopupOpen(false);
     setSelectedCard({});
     setTimeout(setLoad, 1000);
+    setDeleteCard({});
   }
 
   function handleCardClick(card) {
@@ -80,20 +83,22 @@ function App() {
           const newCards = cards.map((item) => item._id === card._id ? newCard : item);
           setCards(newCards);
         })
+        .catch((err) => {
+          console.log(err); // Выведем ошибку в консоль
+        }); 
   }
 
-  function handleCardDelete(card) { // Запрос на удаление карточки.
-    console.log(card)
+  function handleCardDelete() { // Запрос на удаление карточки.
     api
-        .deleteCard(card._id)
+        .deleteCard(deleteCard._id)
         .then((res) => {
-          const newCards = cards.filter((item) => item._id !== card._id);
+          const newCards = cards.filter((item) => item._id !== deleteCard._id);
           setCards(newCards);
+          closeAllPopups()
         })
         .catch((err) => {
           console.log(err); // Выведем ошибку в консоль
-        });
-      closeAllPopups()    
+        });       
   }
 
   function handleUpdateUser(onUpdateUser) { // Запрос на обновление данных пользователя.
@@ -135,6 +140,7 @@ function App() {
         });
   }
 
+
   function handleOverlayClose(evt) {
     if (evt.target === evt.currentTarget) {
       closeAllPopups();
@@ -144,13 +150,15 @@ function App() {
   function handleEscClose(evt) {
     if (evt.key === 'Escape') {
       closeAllPopups();
-    }
-    return document.removeEventListener('keydown', handleEscClose);
+    }   
   }
 
   React.useEffect(() => {
     document.addEventListener('keydown', handleEscClose);
-  });
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    }
+  }, []);
 
   return (
     <div className="page" >
@@ -162,8 +170,7 @@ function App() {
           onCardClick={handleCardClick}
           onTrashClick={handleTrashClick}
           cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete} />
+          onCardLike={handleCardLike} />
         
         <EditProfilePopup isOpen={isEditProfilePopupOpen ? isOpen : false}
           onClose={closeAllPopups}
@@ -183,7 +190,7 @@ function App() {
           onCloseOverlay={handleOverlayClose}
           isLoad={isLoad}/>
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} onCloseOverlay={handleOverlayClose} onKeyDown={handleEscClose}/>
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} onCloseOverlay={handleOverlayClose}/>
 
         <DeleteCardPopup isOpen={isTrashPopupOpen ? isOpen : false}
           onClose={closeAllPopups}

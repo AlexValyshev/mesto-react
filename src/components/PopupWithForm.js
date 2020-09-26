@@ -1,14 +1,34 @@
 import React from 'react';
-
+import FormValidator from '../utils/formValidation.js';
+import { validationConfig } from '../utils/utils.js'
 
 function PopupWithForm({ title, name, isOpen, loader, onClose, children, onSubmit, onCloseOverlay }) {
+    const form = React.useRef(null);
+    const [formValid, SetFormValid] = React.useState(null);
+
+    React.useEffect(() => {
+        const formValidation = new FormValidator(validationConfig, form.current);
+        formValidation.enableValidation();
+        SetFormValid(formValidation);
+    }, []);
+
+    React.useEffect(() => {
+        if (isOpen) {
+            form.current.reset();
+            formValid.resetForm();
+        }
+    }, [isOpen]);
+
     return (
         <section className={isOpen ? 'popup popup_opened' : 'popup'}
             onClick={onCloseOverlay}>
             <div className={isOpen ? `popup__container popup__container-form popup__container_${name} 
             popup__container_opened ` : `popup__container popup__container-form popup__container_${name}`}>
-                <form name={`form-${name}`} action="#" method="post" onSubmit={onSubmit} 
-                    className={`popup__form popup__form_${name}`} noValidate >
+                <form name={`form-${name}`} action="#" method="post"
+                    onSubmit={onSubmit}
+                    className={`popup__form popup__form_${name}`}
+                    noValidate
+                    ref={form}>
                     <h3 className="popup__form-heading">{title}</h3>
                     {children}
                     <button className={`popup__button popup__button-text popup__button_save-${name}`} type="submit">
