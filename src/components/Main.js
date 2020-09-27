@@ -25,8 +25,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, onTrashCli
 
             <section className="photo-place page__container">
                 <ul className="photo-place__elements">
-                    {cards.map((card, i) =>
-                        <Card key={i} card={card} onCardClick={onCardClick}
+                    {cards.map((card, card_id) =>
+                        <Card key={card_id} card={card} onCardClick={onCardClick}
                             onTrashClick={onTrashClick} onCardLike={onCardLike}/>)}
                 </ul>
             </section>

@@ -132,7 +132,7 @@ function App() {
     api
         .addNewCard(onAddPlace)
         .then((newCard) => {
-          setCards([...cards, newCard]);
+          setCards([newCard, ...cards]);
           setTimeout(closeAllPopups, 500);
         })
         .catch((err) => {

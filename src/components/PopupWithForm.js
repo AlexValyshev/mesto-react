@@ -4,19 +4,16 @@ import { validationConfig } from '../utils/utils.js'
 
 function PopupWithForm({ title, name, isOpen, loader, onClose, children, onSubmit, onCloseOverlay }) {
     const form = React.useRef(null);
-    const [formValid, SetFormValid] = React.useState(null);
+    const [formValid, setFormValid] = React.useState(null);
 
     React.useEffect(() => {
         const formValidation = new FormValidator(validationConfig, form.current);
         formValidation.enableValidation();
-        SetFormValid(formValidation);
+        setFormValid(formValidation);
     }, []);
 
     React.useEffect(() => {
-        if (isOpen) {
-            form.current.reset();
-            formValid.resetForm();
-        }
+        isOpen ? formValid.resetForm() : form.current.reset();
     }, [isOpen]);
 
     return (
