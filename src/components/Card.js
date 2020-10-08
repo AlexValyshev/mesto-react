@@ -29,7 +29,7 @@ const Card = React.memo(({ card, onCardClick, onTrashClick, onCardLike}) => {
                 <h2 className="photo-place__title">{card.name}</h2>
                 <div className="photo-place__group-like">
                     <button type="button" className={likeButtonClassName} onClick={handleLikeClick}/>
-                    <p className="photo-place__number-likes" />
+                    <p className="photo-place__number-likes">{card.likes.length}</p>
                 </div>
             </div>
         </li>
